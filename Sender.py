@@ -20,11 +20,6 @@ def send_data(connection,data):
 
 def receive_data(connection):
     return connection.recv(1024)
- 
-def swapPositions(list, pos1, pos2): 
-      
-    list[pos1], list[pos2] = list[pos2], list[pos1] 
-    return list
 
 def get_data():
     data=input('Enter your Data : ')
@@ -48,20 +43,19 @@ data_sent=list()     #store frames that have been sent
 data_notsent=list()  #store frames that have not been sent
 sock,conn=create_socket()    #create socket
 data=get_data()              #divide data into frames each frame has 4 bytes
-print('There are ' + str(len(data)) + 'Frames')
+print('There are ' + str(len(data)) + ' Frames')
 retrans_flag=0               #check if there is retransmission for data
 error_flag=0                 #check if there is an error
 counter=0
 while(1):
     if (error_flag) and (retrans_flag) and counter == 3 :
-        time.sleep(1)
         print('Timeout')
         for i in data_notsent:
             send_data(conn,i[0]+':'+i[1])
             time.sleep(1)
-            print('Re-Sending :'+ i[0] + ' ' + i[1])
-            time.sleep(1)
+            print('Re-Sending : '+ i[0] + ' ' + i[1])
             recv_data=(receive_data(conn).decode('utf-8'))
+            time.sleep(1)
             print(recv_data)
         error_flag=0
         retrans_flag=0
@@ -71,9 +65,10 @@ while(1):
     for i in data:
         if (counter == 3):
             break
-        print('Sending :'+ i[0] + ' ' + i[1])
+        time.sleep(1)
+        print('Sending : '+ i[0] + ' ' + i[1])
         if(i[0]=='3') :
-            send_data(conn,'0none')
+            send_data(conn,'0:none')
         else :
             send_data(conn,i[0]+':'+i[1])
         recv_data=(receive_data(conn).decode('utf-8'))

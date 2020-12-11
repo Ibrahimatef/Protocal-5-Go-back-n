@@ -16,7 +16,6 @@ def close_connection(s):
     s.close()
 
 expected_frame=1
-buffer=list()
 ############main###############
 sock=create_socket()
 flag_error=0
@@ -25,14 +24,16 @@ while(1):
         recev_data=receive_data(sock).decode('utf-8')
         if (recev_data == ''):
             break
-        if(flag_error==1) and expected_frame!=int(recev_data[0]) :
+        if(flag_error==1) and expected_frame!=int(recev_data.split(':')[0]) :
             send_data(sock,'discarded')
-        elif(expected_frame==int(recev_data[0])):
-            print('Received ' + recev_data[0] + ' successfully')
-            send_data(sock,'acknowledge ' + recev_data[0])
+        elif(expected_frame==int(recev_data.split(':')[0])):
+            time.sleep(1)
+            print('Received ' + recev_data.split(':')[0] + ' successfully')
+            send_data(sock,'acknowledge ' + recev_data.split(':')[0])
             expected_frame+=1
             flag_error=0
         else:
+            time.sleep(1)
             print('error')
             send_data(sock,'error')
             flag_error=1
