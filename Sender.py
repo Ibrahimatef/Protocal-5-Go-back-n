@@ -4,7 +4,7 @@ def create_socket():
     s = socket.socket()       
     print ("Socket successfully created") 
     port = 12345                
-    s.bind(('', port))          
+    s.bind(('localhost', port))          
     s.listen(1)   
     print ("socket is listening")
     # Establish connection with client.  

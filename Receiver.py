@@ -3,7 +3,7 @@ import time
 def create_socket():
     s = socket.socket()       
     port = 12345
-    s.connect(('', port))                
+    s.connect(('localhost', port))                
     return s
 
 def send_data(s,data):
